@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="phaser.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Space Explorer</title>
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<script>
+    var game = new Phaser.Game(800,600, Phaser.Auto, "game", {preload: preload, create: create, update: update});
+    var player;
+    var spaceGems;
+    var asteroids;
+    var timer= 0;
+    var score = 0;
+
+    function preload() {
+        game.load.image('astronaut', 'assets/astronaut.png');
+        game.load.image('spaceGem', 'assets/spaceGem.png');
+        game.load.image('background', 'assets/background.png');
+        game.load.image('gametitle', 'assets/gametitle.png');
+        game.load.image('ground', 'assets/ground.png');
+        game.load.image('asteroid', 'assets/asteroid.png');
+
+    }
+
+    function create() {
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        background = game.add.tileSprite(0,0, 800, 600, 'background');
+
+
+        // astronaut
+        player = game.add.sprite(200, 100, 'astronaut');
+        game.physics.arcade.enable(player);
+        player.body.bounce.y = 0.2;
+        player.body.gravity.y = 150;
+        player.body.collideWorldBounds = true;
+        keyboard = game.input.keyboard;
+        cursors = game.input.keyboard.createCursorKeys();
+        scoreText = game.add.text(16,16, 'score:0', {font:'24px arial', fill:'#fff'})
+
+        //spaceGems
+        spaceGems = game.add.group();
+        game.physics.arcade.enable(spaceGems);
+        spaceGems.enableBody = true;
+        spaceGems.createMultiple(5, 'spaceGem');
+        spaceGems.setAll('checkWorldBounds', true);
+        spaceGems.setAll('outOfBoundsKill', true);
+
+        createSpaceGem();
+
+        asteroids = game.add.group();
+        game.physics.arcade.enable(asteroids);
+        asteroids.enableBody = true;
+        asteroids.createMultiple(5, 'asteroid');
+        asteroids.setAll('checkWorldBounds', true);
+        asteroids.setAll('outOfBoundsKill', true);
+        createAsteroids();
+
+        function createSpaceGem() {
+            var MIN_SPACING = 300;
+            var MAX_SPACING = 3000;
+            var SPEED = -200;
+
+            var spaceGem = spaceGems.getFirstExists(false);
+            if (spaceGem) {
+                spaceGem.reset(game.width, game.rnd.integerInRange(0, game.height));
+                spaceGem.body.velocity.x = SPEED;
+                console.log('Hiii')
+            }
+
+            game.time.events.add(game.rnd.integerInRange(MIN_SPACING, MAX_SPACING), createSpaceGem);
+    }
+
+      function createAsteroids() {
+            var MIN_SPACING = 300;
+            var MAX_SPACING = 3000;
+            var SPEED = -250;
+
+            var asteroid = asteroids.getFirstExists(false);
+            if (asteroid) {
+                asteroid.reset(game.width, game.rnd.integerInRange(0, game.height));
+                asteroid.body.velocity.x = SPEED;
+                console.log('Hello')
+            }
+
+            game.time.events.add(game.rnd.integerInRange(MIN_SPACING, MAX_SPACING), createAsteroids);
+    }
+
+
+
+            }
+
+
+
+    function update() {
+
+        timer++;
+        background.tilePosition.x -= 3;
+        if(keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+            player.body.velocity.y = -100;
+        }
+        if(timer/100 % 1 === 0) {
+            score += 1;
+            scoreText.text = 'score:' + score;
+        }
+        game.physics.arcade.overlap(player,spaceGems,spaceGemCollision, null, this);
+        game.physics.arcade.overlap(player,asteroids,asteroidCollision, null, this);
+
+
+
+    }
+
+    function spaceGemCollision(player, spaceGem) {
+            spaceGem.kill();
+            score += 10;
+            scoreText.text = 'score:' + score;
+        }
+    function asteroidCollision(player, asteroid) {
+        asteroid.kill();
+        player.kill();
+
+
+        stateText.text=" GAME OVER \n Click to restart";
+        stateText.visible = true;
+
+        //the "click to restart" handler
+//        game.input.onTap.addOnce(restart,this);
+    }
+</script>
+</body>
+</html>
