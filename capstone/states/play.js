@@ -4,23 +4,25 @@ var asteroids;
 var timer = 0;
 var score = 0;
 var gameOverText;
+var replayBtn;
 var background;
+var restartKey;
 
 var playState = {
 
     create: function () {
-        console.log('playstate - create');
+        //console.log('playstate - create');
         background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
         // astronaut
         player = game.add.sprite(200, 100, 'astronaut');
         game.physics.arcade.enable(player);
-        player.body.bounce.y = 0.2;
-        player.body.gravity.y = 150;
+        player.body.bounce.y = 0.8;
+        player.body.gravity.y = 250;
         player.body.collideWorldBounds = true;
         keyboard = game.input.keyboard;
         cursors = game.input.keyboard.createCursorKeys();
-        scoreText = game.add.text(16, 16, 'score:0', {font: '24px arial', fill: '#fff'});
+        scoreText = game.add.text(16, 16, 'score:0', {font: '24px broadway', fill: '#fff'});
 
         //spaceGems
         spaceGems = game.add.group();
@@ -35,14 +37,14 @@ var playState = {
         asteroids = game.add.group();
         game.physics.arcade.enable(asteroids);
         asteroids.enableBody = true;
-        asteroids.createMultiple(5, 'asteroid');
+        asteroids.createMultiple(8, 'asteroid');
         asteroids.setAll('checkWorldBounds', true);
         asteroids.setAll('outOfBoundsKill', true);
         this.createAsteroids();
     },
 
     createSpaceGem: function () {
-        console.log('playstate - createspacegem');
+        //console.log('playstate - createspacegem');
         var MIN_SPACING = 300;
         var MAX_SPACING = 3000;
         var SPEED = -200;
@@ -57,10 +59,10 @@ var playState = {
     },
 
     createAsteroids: function () {
-        console.log('playstate - createasteroids');
+        //console.log('playstate - createasteroids');
         var MIN_SPACING = 300;
         var MAX_SPACING = 3000;
-        var SPEED = -250;
+        var SPEED = -300;
 
         var asteroid = asteroids.getFirstExists(false);
         if (asteroid) {
@@ -73,7 +75,7 @@ var playState = {
 
 
     update: function () {
-        console.log('playstate - update');
+        //console.log('playstate - update');
         if (player.alive) {
             timer++;
             background.tilePosition.x -= 3;
@@ -82,7 +84,7 @@ var playState = {
             }
             if (timer / 100 % 1 === 0) {
                 score += 1;
-                scoreText.text = 'score:' + score;
+                scoreText.text = 'score: ' + score;
             }
             game.physics.arcade.overlap(player, spaceGems, this.spaceGemCollision, null, this);
             game.physics.arcade.overlap(player, asteroids, this.asteroidCollision, null, this);
@@ -90,14 +92,14 @@ var playState = {
     },
 
     spaceGemCollision: function (player, spaceGem) {
-        console.log('playstate - gem collision');
+        //console.log('playstate - gem collision');
         spaceGem.kill();
         score += 10;
         scoreText.text = 'score:' + score;
     },
 
     asteroidCollision: function (player, asteroid) {
-        console.log('playstate - asteroid collision');
+        //console.log('playstate - asteroid collision');
         asteroid.kill();
         player.kill();
         this.gameover();
@@ -106,18 +108,30 @@ var playState = {
     },
 
     gameover: function (player, asteroid) {
-        gameOverText = game.add.text(400, 300, 'GAME OVER!\n      score:' + score, {
-            font: '80px arial',
-            fill: '#fff',});
-        gameOverText.anchor.setTo(0.5,0.5);
-        restartText = game.add.text(400, 500, 'Press Enter To Restart', {font: '40px arial', fill: '#fff'});
-        restartText.anchor.setTo(0.5, 0.5);
+        gameOverText = game.add.sprite(400, 175, 'gameOver');
+        gameOverText.anchor.setTo(0.5, 0.5);
+          // place the reset button
+        replayBtn = game.add.sprite(400, 500, 'replayBtn');
+        replayBtn.anchor.setTo(0.5, 0.5);
+
+        // Enable input on the button...
+        replayBtn.inputEnabled = true;
+
+
+
+        // Attach a function to the input down ( click/tap)
+        replayBtn.events.onInputDown.add(function() {
+            console.log('!!');
+
+
+            this.game.state.start('play');
+        }, this);
+
     }
 
 
-    // restart: function() {
-    //
-    // }
+
+
 
     //the "click to restart" handler
 //        game.input.onTap.addOnce(restart,this);

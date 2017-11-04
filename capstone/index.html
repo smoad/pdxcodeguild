@@ -1,30 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <script type="text/javascript" src="phaser.min.js"></script>
-    <script type="text/javascript" src="states/boot.js"></script>
-    <script type="text/javascript" src="states/load.js"></script>
-    <!--<script type="text/javascript" src="states/menu.js"></script>-->
-    <script type="text/javascript" src="states/play.js"></script>
-    <!--<script type="text/javascript" src="states/gameover.js"></script>-->
-    <script type="text/javascript" src="states/game.js"></script>
+    <head>
+        <script type="text/javascript" src="phaser.min.js"></script>
+        <script type="text/javascript" src="states/boot.js"></script>
+        <script type="text/javascript" src="states/load.js"></script>
+        <script type="text/javascript" src="states/username.js"></script>
+        <script type="text/javascript" src="states/menu.js"></script>
+        <script type="text/javascript" src="states/play.js"></script>
+
+        <script type="text/javascript" src="states/game.js"></script>
 
 
-    <meta charset="UTF-8">
-    <title>Space Explorer</title>
-    <style>
-        body {
-            background-color: black;
-        }
-    </style>
-</head>
+        <meta charset="UTF-8">
+        <title>Space Explorer</title>
+        <style>
+            body {
+                background-color: black;
+            }
 
-<body>
-<div id="gameDiv"> </div>
-<script>
+            #gameDiv {
+                width: 800px;
+                height:600px;
+                margin: 0 auto;
+            }
+
+            #overlay {
+                position:absolute;
+                width:60%;
+                height:40%;
+                left:20%;
+                top:35%;
+                z-index:2;
+                background-color:#000000CC;
+                color:white;
+            }
+
+            #username{
+                position:absolute;
+                width: 50%;
+                left: 25%;
+                text-align: center;
+                font-size: 32px;
+                border: none;
+                outline: none;
+                background: transparent;
+                color: white;
+
+            }
+            ::placeholder {
+                color: white;
+            }
+
+            #btn {
+                position:absolute;
+                width:15%;
+                height: 15%;
+                left: 75%;
 
 
+            }
+        </style>
+    </head>
 
-</script>
-</body>
+    <body>
+        <div id="gameDiv"></div>
+        <div id="overlay" style="display:none">
+        <form><input id="username" type="text" placeholder="Enter Username">
+        <input id="btn" type="submit" value="submit"/></form></div>
+    </body>
 </html>

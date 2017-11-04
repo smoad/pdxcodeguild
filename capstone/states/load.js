@@ -8,6 +8,9 @@ var loadState = {
         game.load.image('spaceGem', 'assets/spaceGem.png');
         game.load.image('background', 'assets/background.png');
         game.load.image('gametitle', 'assets/gametitle.png');
+        game.load.image('playbtn', 'assets/playbtn.png');
+        game.load.image('replayBtn', 'assets/replayBtn.png');
+        game.load.image('gameOver', 'assets/gameover.png');
         game.load.image('ground', 'assets/ground.png');
         game.load.image('asteroid', 'assets/asteroid.png');
 
