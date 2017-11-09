@@ -1,8 +1,11 @@
 //menuState displays game title, and start button
 
+
+
+var username;
+
 var menuState = {
     create: function() {
-        var username;
         var menuOverlay;
         var mainView;
         var welcomeText;
@@ -38,7 +41,6 @@ var menuState = {
         //backBtn.onclick = this.showMainView;
         //console.log(this.showMainView);
         backBtn.onclick = function() {
-            console.log('!!');
             instructionView.style.display = 'none';
             mainView.style.display = 'block';
         }
@@ -58,4 +60,6 @@ var menuState = {
     update: function() {
         background.tilePosition.x -= 4;
     }
+
+
 };

@@ -5,8 +5,9 @@ var timer = 0;
 var score = 0;
 var gameOverText;
 var replayBtn;
-var menuBtn;
+var quitBtn;
 var background;
+var gameOverOverlay;
 var restartKey;
 
 var playState = {
@@ -108,34 +109,27 @@ var playState = {
 
     },
 
-    gameover: function (player, asteroid) {
-        gameOverText = game.add.sprite(400, 175, 'gameOver');
-        gameOverText.anchor.setTo(0.5, 0.5);
-          // place the reset button
-        replayBtn = game.add.sprite(400, 500, 'replayBtn');
-        replayBtn.anchor.setTo(0.5, 0.5);
-        // Enable input on the button...
-        replayBtn.inputEnabled = true;
-        // Attach a function to the input down ( click/tap)
-        replayBtn.events.onInputDown.add(function() {
-            console.log('!!');
-            this.game.state.start('play');
-        }, this);
-        menuBtn = game.add.sprite(400, 550,'backBtn');
-        menuBtn.anchor.setTo(0.5,0.5);
-        menuBtn.inputEnabled = true;
-        menuBtn.events.onInputDown.add(function() {
-            this.game.state.start('menu');
-        }, this);
+    gameover: function () {
 
+        http_post("{% url 'gameapp:savescore' %}", {username: username, score: score}, function(response) {
+
+        });
+
+        gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'block';
+        replayBtn = document.getElementById('replayBtn');
+        replayBtn.onclick = function() {
+            score = 0;
+            gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'none';
+            game.state.start('play');
+        };
+        quitBtn = document.getElementById('quitBtn').onclick = function() {
+            gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'none';
+            game.state.start('menu');
+        }
     }
-
-
-
-
-
-    //the "click to restart" handler
-//        game.input.onTap.addOnce(restart,this);
-
-
 };
+
+
+
+
+

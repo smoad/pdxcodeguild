@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"></script>
+
+    <script>
+        function http_get(url, success) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    var data = JSON.parse(xhttp.responseText);
+                    success(data);
+                }
+            };
+            xhttp.open("GET", url);
+            xhttp.send();
+        }
+
+
+        function http_post(url, data, success) {
+            var csrf_token = Cookies.get('csrftoken');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    success(xhttp.responseText);
+                }
+            };
+            xhttp.open("POST", url);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.setRequestHeader('X-CSRFToken', csrf_token);
+            xhttp.send(JSON.stringify(data));
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.9.1/phaser.min.js"></script>
+    <script type="text/javascript" src="{% static 'gameapp/states/boot.js' %}"></script>
+    <script type="text/javascript">
+        // loadState will display loading label, preload assets and call menuState
+
+        var loadState = {
+            preload: function () {
+                var loadingLabel = game.add.text(400, 300, 'loading', {font: '30px Courier', fill: "#fffff"});
+                loadingLabel.anchor.setTo(0.5, 0.5);
+
+                game.load.image('astronaut', "{% static 'gameapp/assets/astronaut.png' %}");
+                game.load.image('spaceGem', "{% static 'gameapp/assets/spaceGem.png' %}");
+                game.load.image('background', "{% static 'gameapp/assets/background.png' %}");
+                game.load.image('gametitle', "{% static 'gameapp/assets/gametitle.png' %}");
+                game.load.image('playbtn', "{% static 'gameapp/assets/playbtn.png' %}");
+                game.load.image('replayBtn', "{% static 'gameapp/assets/replayBtn.png' %}");
+                game.load.image('backBtn', "{% static 'gameapp/assets/backBtn.png' %}");
+                game.load.image('gameOver', "{% static 'gameapp/assets/gameover.png' %}");
+                game.load.image('ground', "{% static 'gameapp/assets/ground.png' %}");
+                game.load.image('asteroid', "{% static 'gameapp/assets/asteroid.png' %}");
+
+
+            },
+
+            create: function() {
+                game.state.start('username');
+            }
+        };
+    </script>
+    <script type="text/javascript" src="{% static 'gameapp/states/username.js' %}"></script>
+    <script type="text/javascript" src="{% static 'gameapp/states/menu.js' %}"></script>
+    <script type="text/javascript" src="{% static 'gameapp/states/play.js' %}"></script>
+    <script type="text/javascript" src="{% static 'gameapp/states/game.js' %}"></script>
+
+
+
+
+
+
+    <meta charset="UTF-8">
+    <title>Space Explorer</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        #gameDiv {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        #usernameOverlay {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 25%;
+            top: 25%;
+            z-index: 2;
+            background-color: #000000CC;
+            color: white;
+        }
+
+        #gametitleUsername {
+            position: absolute;
+            width: 100%;
+            height: 150px;
+            top: -32%;
+            text-align: center;
+
+        }
+
+        #username {
+            position: absolute;
+            width: 50%;
+            height: 20%;
+            top: 30%;
+            bottom: 3%;
+            left: 25%;
+            border: none;
+            border-bottom: solid 3px;
+            text-align: center;
+            text-indent: 15px;
+            font-size: 32px;
+            outline: none;
+            background: transparent url('../../static/gameapp/assets/astroIcon.png') no-repeat scroll 7px 7px;
+
+            color: white;
+
+        }
+
+        ::placeholder {
+            color: white;
+        }
+
+        #usernameBtn {
+            position: absolute;
+            width: 30%;
+            height: 15%;
+            left: 35%;
+            top: 65%;
+            background: url('../../static/gameapp/assets/submitBtn.png') no-repeat;
+            border: none;
+            outline: none;
+
+        }
+
+        #menuOverlay {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 25%;
+            top: 25%;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        #gametitleMenu {
+            position: absolute;
+            width: 100%;
+            height: 150px;
+            top: -32%;
+            text-align: center;
+
+        }
+
+        #welcome {
+            position: absolute;
+            width: 65%;
+            left: 17%;
+            text-shadow: 2px 2px #000000;
+        }
+
+        #playBtn {
+            position: absolute;
+            width: 40%;
+            height: 15%;
+            left: 38%;
+            top: 65%;
+            border: none;
+            outline: none;
+            background: url('../../static/gameapp/assets/playbtn.png') no-repeat;
+        }
+        #instructionBtn {
+            position: absolute;
+            width: 60%;
+            height: 15%;
+            top: 45%;
+            left:20%;
+            border: none;
+            outline: none;
+            background: url('../../static/gameapp/assets/instructionsbtn.png') no-repeat;
+
+        }
+
+
+        #instructionsList {
+            position: absolute;
+            list-style: none;
+            text-align: left;
+            font-size: 32px;
+            width: 90%;
+            top: 10%;
+        }
+        #spaceBar {
+            text-align: center;
+        }
+
+
+        #backButton {
+            position: absolute;
+            width: 50%;
+            height: 20%;
+            top: 80%;
+            left: 25%;
+            border: none;
+            outline: none;
+            background: url('../../static/gameapp/assets/backBtn.png') no-repeat;
+        }
+
+        #gameOverOverlay {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 25%;
+            top: 25%;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+        #gameOverText {
+            position: absolute;
+            width: 100%;
+            height: 150px;
+            top: -25%;
+            left: 0;
+
+        }
+        #replayBtn {
+            position: absolute;
+            width: 30%;
+            height: 20%;
+            top: 65%;
+            left: 35%;
+            border: none;
+            outline: none;
+            background: url('../../static/gameapp/assets/replayBtn.png') no-repeat;
+
+        }
+        #quitBtn {
+            position: absolute;
+            width: 50%;
+            height: 20%;
+            top: 80%;
+            left: 25%;
+            border: none;
+            outline: none;
+            background: url('../../static/gameapp/assets/backBtn.png') no-repeat;
+        }
+
+
+
+
+    </style>
+</head>
+
+<body>
+<div id="gameDiv"></div>
+<div id="usernameOverlay" style="display:none">
+    <p><img id="gametitleUsername" src="../../static/gameapp/assets/gametitle.png" alt="space explorer"></p>
+    <form><input id="username" type="text" placeholder="Enter Username"></form>
+    <form><input id="usernameBtn" type="button" value=""/></form>
+</div>
+<div id="menuOverlay" style="display:none">
+    <p><img id="gametitleMenu" src="../../static/gameapp/assets/gametitle.png" alt="space explorer"></p>
+    <div id="mainView">
+        <h1 id="welcome"></h1>
+        <form><input id="instructionBtn" type="button" value=""/></form>
+        <form><input id="playBtn" type="button" value=""/></form>
+    </div>
+    <div id="instructionView">
+        <ul id="instructionsList">
+            <li id="spaceBar"> Use the <strong>SPACEBAR</strong> to help the astronaut navigate through the asteroid field.</li>
+
+            <li>
+                <img id="spacegem" src="../../static/gameapp/assets/spaceGem.png" alt="spaceGem"> Collect space gems to increase your score!</li>
+            <li>
+                <img id="asteroid" src="../../static/gameapp/assets/asteroid.png" alt="asteroid"> Make sure to avoid asteroids! </li>
+        </ul>
+        <input id="backButton" type="button" value="">
+    </div>
+</div>
+<div id="gameOverOverlay" style="display:none">
+
+    <h1 id="gameOverText"><img src="../../static/gameapp/assets/gameover.png" alt="GAMEOVER"></h1>
+    <p id="highscores"></p>
+    <input id="replayBtn" type="button" value="">
+    <input id="quitBtn" type="button" value="">
+
+
+</div>
+
+
+
+
+</body>
+</html>
