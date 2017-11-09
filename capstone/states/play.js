@@ -5,6 +5,7 @@ var timer = 0;
 var score = 0;
 var gameOverText;
 var replayBtn;
+var menuBtn;
 var background;
 var restartKey;
 
@@ -28,7 +29,7 @@ var playState = {
         spaceGems = game.add.group();
         game.physics.arcade.enable(spaceGems);
         spaceGems.enableBody = true;
-        spaceGems.createMultiple(5, 'spaceGem');
+        spaceGems.createMultiple(9, 'spaceGem');
         spaceGems.setAll('checkWorldBounds', true);
         spaceGems.setAll('outOfBoundsKill', true);
 
@@ -78,9 +79,9 @@ var playState = {
         //console.log('playstate - update');
         if (player.alive) {
             timer++;
-            background.tilePosition.x -= 3;
+            background.tilePosition.x -= 4;
             if (keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-                player.body.velocity.y = -100;
+                player.body.velocity.y = -150;
             }
             if (timer / 100 % 1 === 0) {
                 score += 1;
@@ -113,18 +114,18 @@ var playState = {
           // place the reset button
         replayBtn = game.add.sprite(400, 500, 'replayBtn');
         replayBtn.anchor.setTo(0.5, 0.5);
-
         // Enable input on the button...
         replayBtn.inputEnabled = true;
-
-
-
         // Attach a function to the input down ( click/tap)
         replayBtn.events.onInputDown.add(function() {
             console.log('!!');
-
-
             this.game.state.start('play');
+        }, this);
+        menuBtn = game.add.sprite(400, 550,'backBtn');
+        menuBtn.anchor.setTo(0.5,0.5);
+        menuBtn.inputEnabled = true;
+        menuBtn.events.onInputDown.add(function() {
+            this.game.state.start('menu');
         }, this);
 
     }
