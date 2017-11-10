@@ -110,9 +110,17 @@ var playState = {
     },
 
     gameover: function () {
-
         http_post("{% url 'gameapp:savescore' %}", {username: username, score: score}, function(response) {
+        });
 
+        http_get("{% url 'gameapp:getscore' %}", function(data) {
+            console.log(data);
+            var highscores = document.getElementById('highscores');
+            for(var i=0; i<data.scores.length && i<data.usernames.length; ++i) {
+                var li = document.createElement('li');
+                li.innerHTML = data.usernames[i] + ': ' + data.scores[i];
+                highscores.appendChild(li);
+            }
         });
 
         gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'block';
