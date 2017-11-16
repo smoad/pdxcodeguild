@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     {% load static %}
-
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"></script>
+
 
     <script>
         function http_get(url, success) {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     var data = JSON.parse(xhttp.responseText);
                     success(data);
@@ -22,7 +23,7 @@
         function http_post(url, data, success) {
             var csrf_token = Cookies.get('csrftoken');
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     success(xhttp.responseText);
                 }
@@ -57,7 +58,7 @@
 
             },
 
-            create: function() {
+            create: function () {
                 game.state.start('username');
             }
         };
@@ -66,10 +67,6 @@
     <script type="text/javascript" src="{% static 'gameapp/states/menu.js' %}"></script>
     <script type="text/javascript" src="{% static 'gameapp/states/play.js' %}"></script>
     <script type="text/javascript" src="{% static 'gameapp/states/game.js' %}"></script>
-
-
-
-
 
 
     <meta charset="UTF-8">
@@ -177,18 +174,18 @@
             outline: none;
             background: url('../../static/gameapp/assets/playbtn.png') no-repeat;
         }
+
         #instructionBtn {
             position: absolute;
             width: 60%;
             height: 15%;
             top: 45%;
-            left:20%;
+            left: 20%;
             border: none;
             outline: none;
             background: url('../../static/gameapp/assets/instructionsbtn.png') no-repeat;
 
         }
-
 
         #instructionsList {
             position: absolute;
@@ -198,10 +195,10 @@
             width: 90%;
             top: 10%;
         }
+
         #spaceBar {
             text-align: center;
         }
-
 
         #backButton {
             position: absolute;
@@ -216,53 +213,48 @@
 
         #gameOverOverlay {
             position: absolute;
-            width: 50%;
-            height: 50%;
-            left: 25%;
-            top: 25%;
+            left:50%;
+            transform:translate(-50%, 0%);
+            width: 800px;
+            height: 600px;
+            top: 8px;
             z-index: 2;
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
         }
+
         #gameOverText {
-            position: absolute;
-            width: 100%;
-            height: 150px;
-            top: -25%;
-            left: 0;
+            text-align:center;
+        }
+
+        #highscores {
+            list-style: none;
+            color: #0aff07;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
 
         }
-        #highscores {
-            position: absolute;
-            list-style: none;
-            font-size: 32px;
-            width: 40%;
-            left: 30%;
-            top: 25%;
+
+        #gameOverButtons {
+            width: 50%;
         }
+
         #replayBtn {
-            position: absolute;
-            width: 30%;
-            height: 20%;
-            top: 65%;
-            left: 35%;
+            width:170px;
+            height:30px;
             border: none;
             outline: none;
             background: url('../../static/gameapp/assets/replayBtn.png') no-repeat;
-
         }
+
         #quitBtn {
-            position: absolute;
-            width: 50%;
-            height: 20%;
-            top: 80%;
-            left: 25%;
+
+            width:320px;
+            height:30px;
             border: none;
             outline: none;
             background: url('../../static/gameapp/assets/backBtn.png') no-repeat;
         }
-
-
 
 
     </style>
@@ -284,27 +276,40 @@
     </div>
     <div id="instructionView">
         <ul id="instructionsList">
-            <li id="spaceBar"> Use the <strong>SPACEBAR</strong> to help the astronaut navigate through the asteroid field.</li>
+            <li id="spaceBar"> Use the <strong>SPACEBAR</strong> to help the astronaut navigate through the asteroid
+                field.
+            </li>
 
             <li>
-                <img id="spacegem" src="../../static/gameapp/assets/spaceGem.png" alt="spaceGem"> Collect space gems to increase your score!</li>
+                <img id="spacegem" src="../../static/gameapp/assets/spaceGem.png" alt="spaceGem"> Collect space gems to
+                increase your score!
+            </li>
             <li>
-                <img id="asteroid" src="../../static/gameapp/assets/asteroid.png" alt="asteroid"> Make sure to avoid asteroids! </li>
+                <img id="asteroid" src="../../static/gameapp/assets/asteroid.png" alt="asteroid"> Make sure to avoid
+                asteroids!
+            </li>
         </ul>
         <input id="backButton" type="button" value="">
     </div>
 </div>
 <div id="gameOverOverlay" style="display:none">
 
-    <h1 id="gameOverText"><img src="../../static/gameapp/assets/gameover.png" alt="GAMEOVER"></h1>
-    <ul id="highscores"></ul>
-    <input id="replayBtn" type="button" value="">
-    <input id="quitBtn" type="button" value="">
+    <img id="gameOverText" src="../../static/gameapp/assets/gameover.png" alt="GAMEOVER" width="800" height="100"/>
+
+    <table>
+        <tr>
+            <td id="highscoreText">
+                <ul id="highscores"></ul>
+            </td>
+            <td id="gameOverButtons">
+                <input id="replayBtn" type="button" value="">
+                <input id="quitBtn" type="button" value="">
+            </td>
+        </tr>
+    </table>
 
 
 </div>
-
-
 
 
 </body>

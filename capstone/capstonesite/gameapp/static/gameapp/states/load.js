@@ -20,7 +20,6 @@ var loadState = {
     },
 
     create: function() {
-        console.log('test123');
         game.state.start('username');
     }
 };

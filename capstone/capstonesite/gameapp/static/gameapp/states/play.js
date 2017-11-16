@@ -43,6 +43,10 @@ var playState = {
         asteroids.setAll('checkWorldBounds', true);
         asteroids.setAll('outOfBoundsKill', true);
         this.createAsteroids();
+
+
+
+
     },
 
     createSpaceGem: function () {
@@ -116,6 +120,9 @@ var playState = {
         http_get("{% url 'gameapp:getscore' %}", function(data) {
             console.log(data);
             var highscores = document.getElementById('highscores');
+            while (highscores.hasChildNodes()) {
+                highscores.removeChild(highscores.lastChild);
+            }
             for(var i=0; i<data.scores.length && i<data.usernames.length; ++i) {
                 var li = document.createElement('li');
                 li.innerHTML = data.usernames[i] + ': ' + data.scores[i];
