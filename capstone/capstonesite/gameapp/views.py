@@ -7,7 +7,7 @@ def index(request):
     return render(request, 'gameapp/index.html', {})
 
 def getscore(request):
-    scores = HighScore.objects.all().order_by('-score')[:3]
+    scores = HighScore.objects.all().order_by('-score')[:10]
     data_dict = {'usernames': [], 'scores': []}
     for score in scores:
         data_dict['usernames'].append(score.username)

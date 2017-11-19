@@ -3,24 +3,25 @@
 
 
 var username;
+var menuOverlay;
+var mainView;
+var playBtn;
+var instructionView;
+var instructionBtn;
+
 
 var menuState = {
     create: function() {
-        var menuOverlay;
-        var mainView;
-        var welcomeText;
-        var playBtn;
-        var instructionView;
-        var instructionBtn;
 
 
 
         background = game.add.tileSprite(0, 0, 800, 600, 'background');
         username = document.getElementById('username').value;
         // main menu
-        menuOverlay = document.getElementById('menuOverlay').style.display = 'block';
-        mainView = document.getElementById('mainView').style.display = 'block';
-        welcomeText = document.getElementById('welcome').innerHTML = 'Welcome ' + ' '+ username + '!';
+        menuOverlay = document.getElementById('menuOverlay');
+        menuOverlay.style.display = 'block';
+        mainView = document.getElementById('mainView');
+        mainView.style.display = 'block';
         instructionBtn = document.getElementById('instructionBtn').onclick = this.showInstructionView;
         playBtn = document.getElementById('playBtn').onclick = this.loadplayState;
         // instructions

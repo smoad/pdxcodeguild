@@ -1,4 +1,5 @@
 var player;
+var scoreText;
 var spaceGems;
 var asteroids;
 var timer = 0;
@@ -8,7 +9,6 @@ var replayBtn;
 var quitBtn;
 var background;
 var gameOverOverlay;
-var restartKey;
 
 var playState = {
 
@@ -22,9 +22,16 @@ var playState = {
         player.body.bounce.y = 0.8;
         player.body.gravity.y = 250;
         player.body.collideWorldBounds = true;
+
+        // enable keyboard controls
         keyboard = game.input.keyboard;
         cursors = game.input.keyboard.createCursorKeys();
-        scoreText = game.add.text(16, 16, 'score:0', {font: '24px broadway', fill: '#fff'});
+
+        // add text to screen
+        scoreText = game.add.text(300, 16, 'score:0', {font: '24px broadway', fill: '#fff'});
+        username = document.getElementById('username').value;
+        usernameText = game.add.text(16, 16, + 'username: ', {font: '24px broadway', fill:'#fff'});
+        usernameText.text = 'username:' + username;
 
         //spaceGems
         spaceGems = game.add.group();
@@ -36,6 +43,7 @@ var playState = {
 
         this.createSpaceGem();
 
+        // Create asteroids
         asteroids = game.add.group();
         game.physics.arcade.enable(asteroids);
         asteroids.enableBody = true;
@@ -50,7 +58,6 @@ var playState = {
     },
 
     createSpaceGem: function () {
-        //console.log('playstate - createspacegem');
         var MIN_SPACING = 300;
         var MAX_SPACING = 3000;
         var SPEED = -200;
@@ -114,21 +121,24 @@ var playState = {
     },
 
     gameover: function () {
+        scoreText.text = '';
         http_post("{% url 'gameapp:savescore' %}", {username: username, score: score}, function(response) {
+            http_get("{% url 'gameapp:getscore' %}", function(data) {
+                console.log(data);
+                var highscores = document.getElementById('highscores');
+                while (highscores.hasChildNodes()) {
+                    highscores.removeChild(highscores.lastChild);
+                }
+                for(var i=0; i<data.scores.length && i<data.usernames.length; ++i) {
+                    var li = document.createElement('li');
+                    li.innerHTML = data.usernames[i] + ': ' + data.scores[i];
+                    highscores.appendChild(li);
+                }
+            });
         });
 
-        http_get("{% url 'gameapp:getscore' %}", function(data) {
-            console.log(data);
-            var highscores = document.getElementById('highscores');
-            while (highscores.hasChildNodes()) {
-                highscores.removeChild(highscores.lastChild);
-            }
-            for(var i=0; i<data.scores.length && i<data.usernames.length; ++i) {
-                var li = document.createElement('li');
-                li.innerHTML = data.usernames[i] + ': ' + data.scores[i];
-                highscores.appendChild(li);
-            }
-        });
+
+
 
         gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'block';
         replayBtn = document.getElementById('replayBtn');

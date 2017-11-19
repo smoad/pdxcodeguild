@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
-    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rationale" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"></script>
 
 
@@ -228,9 +228,13 @@
         }
 
         #highscores {
-            list-style: none;
+            /*list-style: none;*/
+            width: 300px;
+            height: 350px;
+            padding: 10%;
+            border: #0aff07 solid 2px;
             color: #0aff07;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Rationale', sans-serif;
             font-size: 32px;
 
         }
@@ -240,6 +244,7 @@
         }
 
         #replayBtn {
+            top: 80%;
             width:170px;
             height:30px;
             border: none;
@@ -264,13 +269,12 @@
 <div id="gameDiv"></div>
 <div id="usernameOverlay" style="display:none">
     <p><img id="gametitleUsername" src="../../static/gameapp/assets/gametitle.png" alt="space explorer"></p>
-    <form><input id="username" type="text" placeholder="Enter Username"></form>
+    <form><input id="username" type="text" maxlength="7" placeholder="Enter Username"></form>
     <form><input id="usernameBtn" type="button" value=""/></form>
 </div>
 <div id="menuOverlay" style="display:none">
     <p><img id="gametitleMenu" src="../../static/gameapp/assets/gametitle.png" alt="space explorer"></p>
     <div id="mainView">
-        <h1 id="welcome"></h1>
         <form><input id="instructionBtn" type="button" value=""/></form>
         <form><input id="playBtn" type="button" value=""/></form>
     </div>
@@ -299,7 +303,7 @@
     <table>
         <tr>
             <td id="highscoreText">
-                <ul id="highscores"></ul>
+                <ol id="highscores"></ol>
             </td>
             <td id="gameOverButtons">
                 <input id="replayBtn" type="button" value="">
