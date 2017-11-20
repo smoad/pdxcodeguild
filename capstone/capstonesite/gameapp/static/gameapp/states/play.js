@@ -122,6 +122,7 @@ var playState = {
 
     gameover: function () {
         scoreText.text = '';
+        usernameText.text = '';
         http_post("{% url 'gameapp:savescore' %}", {username: username, score: score}, function(response) {
             http_get("{% url 'gameapp:getscore' %}", function(data) {
                 console.log(data);
@@ -144,10 +145,12 @@ var playState = {
         replayBtn = document.getElementById('replayBtn');
         replayBtn.onclick = function() {
             score = 0;
+            usernameText = 'username: ' + username;
             gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'none';
             game.state.start('play');
         };
         quitBtn = document.getElementById('quitBtn').onclick = function() {
+            score = 0;
             gameOverOverlay = document.getElementById('gameOverOverlay').style.display = 'none';
             game.state.start('menu');
         }
